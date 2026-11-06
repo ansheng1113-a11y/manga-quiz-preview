@@ -1,0 +1,261 @@
+@charset "UTF-8";
+
+/* Comic review direction, used by the standalone design preview. */
+body[data-style="manga"] {
+  --paper: #f4f0e6;
+  --surface: #fffdf7;
+  --ink: #1b1b19;
+  --muted: #726d63;
+  --accent: #dc4828;
+  --soft: #f3dfcc;
+  --line: #c9c2b4;
+  background-color: var(--paper);
+  background-image: linear-gradient(var(--paper), var(--paper)), radial-gradient(#1b1b1933 .65px, transparent .85px);
+  background-size: min(1160px, calc(100% - 16px)) 100%, 6px 6px;
+  background-position: center top, left top;
+  background-repeat: no-repeat, repeat;
+  color: var(--ink);
+}
+body[data-style="manga"] .site-header { max-width: 1160px; padding: 24px 32px 19px; border-bottom: 3px solid var(--ink); }
+body[data-style="manga"] .brand { font-weight: 850; letter-spacing: 1px; }
+body[data-style="manga"] .brand-mark { width: 40px; height: 40px; background: var(--ink); color: var(--surface); border: 0; transform: none; }
+body[data-style="manga"] .brand-sub { letter-spacing: 1px; }
+body[data-style="manga"] .app-shell { max-width: 1160px; padding: 32px 32px 24px; }
+body[data-style="manga"] .site-footer { max-width: 1160px; padding: 23px 32px 34px; border-top: 1px solid var(--ink); }
+body[data-style="manga"] .eyebrow { color: var(--accent); font-size: 10px; letter-spacing: 2px; font-weight: 750; }
+body[data-style="manga"] .btn { min-height: 49px; padding: 12px 25px; border: 2px solid var(--ink); box-shadow: 3px 3px 0 var(--accent); font-weight: 750; transition: transform .15s, background .15s, box-shadow .15s; }
+body[data-style="manga"] .btn:hover { background: var(--accent); border-color: var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+body[data-style="manga"] .btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+body[data-style="manga"] .btn.secondary { background: var(--surface); color: var(--ink); box-shadow: none; }
+body[data-style="manga"] .btn.secondary:hover { background: var(--soft); }
+body[data-style="manga"] .btn.small { min-height: 40px; padding: 8px 15px; }
+body[data-style="manga"] .btn:disabled { box-shadow: none; }
+
+/* Cover: one large illustration panel, with the opening action in the copy. */
+body[data-style="manga"] .comic-cover { position: relative; isolation: isolate; overflow: hidden; display: grid; grid-template-columns: 1.1fr .9fr; align-items: stretch; gap: 0; min-height: 560px; background: var(--surface); border: 2px solid var(--ink); }
+body[data-style="manga"] .hero-copy { position: relative; z-index: 2; padding: 41px 0 34px 38px; }
+body[data-style="manga"] .comic-cover .eyebrow { margin: 0 0 21px; }
+body[data-style="manga"] .comic-cover h1 { position: relative; margin: 0 0 21px; font-family: var(--sans); font-size: clamp(42px, 4.3vw, 61px); line-height: 1.12; font-weight: 900; letter-spacing: -2px; transform: none; }
+body[data-style="manga"] .comic-cover h1 > span,
+body[data-style="manga"] .comic-cover h1 > em { display: block; width: fit-content; }
+body[data-style="manga"] .comic-cover h1 > em { margin: 7px 0; padding: 4px 8px 7px; background: var(--ink); color: var(--surface); font-size: .82em; letter-spacing: -1px; transform: rotate(-2deg); }
+body[data-style="manga"] .comic-cover .intro { max-width: 25em; margin: 0; color: #5a554d; font-size: 13px; line-height: 1.9; }
+body[data-style="manga"] .comic-cover .meta-row { margin: 23px 0 22px; gap: 30px; }
+body[data-style="manga"] .meta-item strong { font-size: 23px; font-weight: 800; }
+body[data-style="manga"] .meta-item span { font-size: 10px; }
+body[data-style="manga"] .hero-start .btn { min-width: 220px; justify-content: space-between; }
+body[data-style="manga"] .hero-start .start-note { margin: 11px 0 0; }
+body[data-style="manga"] .comic-cover .hero-art { z-index: 1; position: relative; order: initial; min-height: 0; max-height: none; margin: 0; padding: 35px 16px 0 0; display: flex; align-items: flex-end; justify-content: center; gap: 0; background: transparent; }
+body[data-style="manga"] .comic-cover .hero-art::before { content: ""; position: absolute; z-index: -1; inset: 44px -40px 44px 0; background: radial-gradient(#1b1b1955 .65px, transparent .85px) 0 0 / 5px 5px, #f1e5d1; clip-path: polygon(20% 0, 100% 0, 100% 100%, 0 100%); }
+body[data-style="manga"] .comic-cover .hero-art::after { content: ""; position: absolute; z-index: -1; top: 52px; bottom: 52px; left: 26px; width: 3px; background: var(--ink); transform: rotate(8deg); }
+body[data-style="manga"] .comic-cover .hero-art img { display: block; width: 100%; max-width: 440px; height: 510px; object-fit: contain; object-position: center bottom; filter: none; }
+body[data-style="manga"] .comic-cover .hero-art figcaption { position: absolute; right: 15px; top: 26px; padding: 9px 5px; color: var(--ink); background: var(--surface); font-size: 10px; writing-mode: vertical-rl; letter-spacing: 2px; line-height: 1.7; }
+body[data-style="manga"] .ribbon { margin: 16px 0 37px; padding: 12px 2px; border: 0; border-bottom: 1px solid var(--ink); background: transparent; transform: none; color: var(--muted); font-size: 10px; letter-spacing: 0; }
+body[data-style="manga"] .home-section-title { display: flex; align-items: center; gap: 16px; margin: 0 0 18px; font-size: 20px; font-weight: 850; letter-spacing: -.4px; }
+body[data-style="manga"] .home-section-title::after { content: ""; flex: 1; height: 3px; background: var(--ink); }
+body[data-style="manga"] .themes-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 25px; }
+body[data-style="manga"] .theme-card { display: grid; grid-template-columns: 25px minmax(0, 1fr); gap: 0 9px; padding: 18px 0; border: 0; border-bottom: 1px solid var(--line); background: transparent; box-shadow: none; }
+body[data-style="manga"] .theme-card > span { grid-row: 1 / 3; padding-top: 3px; font-size: 10px; font-weight: 750; }
+body[data-style="manga"] .theme-card h3 { margin: 0 0 6px; font-size: 13px; }
+body[data-style="manga"] .theme-card p { font-size: 11px; }
+body[data-style="manga"] .cast-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; margin: 31px 0 27px; }
+body[data-style="manga"] .cast-panel { position: relative; min-width: 0; height: 235px; padding: 9px 9px 27px; overflow: hidden; border: 2px solid var(--ink); background: radial-gradient(#1b1b1922 .65px, transparent .85px) 0 0 / 5px 5px, #e9dfce; }
+body[data-style="manga"] .cast-panel img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center; }
+body[data-style="manga"] .cast-panel span { position: absolute; bottom: 0; left: 0; padding: 5px 12px 6px; background: var(--surface); border-top: 2px solid var(--ink); border-right: 2px solid var(--ink); font-size: 13px; font-weight: 800; }
+body[data-style="manga"] .roster { margin-top: 35px; }
+body[data-style="manga"] .roster-chips { gap: 5px 20px; }
+body[data-style="manga"] .roster-chips span { min-width: 0; padding: 5px 0; border: 0; background: none; color: #57534c; font-size: 11px; }
+body[data-style="manga"] .home-notes { max-width: 660px; line-height: 1.9; }
+
+/* A question is one panel; every option has the same weight and hit area. */
+body[data-style="manga"] .comic-quiz { max-width: 790px; padding-top: 14px; }
+body[data-style="manga"] .quiz-top { align-items: center; margin-bottom: 13px; color: var(--ink); font-size: 11px; letter-spacing: .4px; }
+body[data-style="manga"] .quiz-top > span:last-child { font-weight: 750; font-variant-numeric: tabular-nums; }
+body[data-style="manga"] .progress-track { height: 5px; margin-bottom: 29px; background: #1b1b191c; }
+body[data-style="manga"] .progress-track i { background: var(--accent); }
+body[data-style="manga"] .question-statement { position: relative; display: grid; grid-template-columns: 75px minmax(0, 1fr); gap: 25px; align-items: center; margin-bottom: 32px; padding: 26px; border: 2px solid var(--ink); border-top-width: 3px; border-radius: 3px 15px 4px 15px; background: var(--surface); }
+body[data-style="manga"] .question-statement::after { content: ""; position: absolute; bottom: -11px; left: 116px; width: 18px; height: 18px; border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink); background: var(--surface); transform: skewY(16deg) rotate(45deg); }
+body[data-style="manga"] .question-index { display: flex; flex-direction: column; align-items: center; gap: 5px; margin: 0; padding: 10px 6px; border: 1px solid var(--ink); background: var(--accent); color: var(--surface); transform: none; font-family: var(--sans); box-shadow: 3px 3px 0 var(--ink); }
+body[data-style="manga"] .question-index small { font-size: 10px; line-height: 1; font-weight: 500; }
+body[data-style="manga"] .question-index strong { color: var(--surface); font-family: Impact, "Arial Narrow", var(--sans); font-size: 43px; line-height: 1; font-weight: 850; letter-spacing: -1px; }
+body[data-style="manga"] .comic-quiz h1 { margin: 0; font-family: var(--sans); font-size: 29px; line-height: 1.65; font-weight: 850; letter-spacing: -.5px; text-wrap: pretty; }
+body[data-style="manga"] .options { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
+body[data-style="manga"] .option { align-items: center; gap: 15px; min-height: 107px; padding: 20px; border: 2px solid var(--ink); border-bottom-width: 3px; background: var(--surface); box-shadow: none; color: var(--ink); font-size: 14px; line-height: 1.8; }
+body[data-style="manga"] .option-letter { display: grid; place-items: center; width: 29px; height: 29px; padding: 0; border: 1px solid var(--ink); background: var(--ink); color: var(--surface); font-size: 12px; line-height: 1; font-weight: 650; }
+body[data-style="manga"] .option:hover { background: #f8e9db; border-color: var(--ink); }
+body[data-style="manga"] .option[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--surface); box-shadow: 3px 3px 0 var(--accent); }
+body[data-style="manga"] .option[aria-pressed="true"] .option-letter { color: var(--surface); border-color: var(--accent); background: var(--accent); }
+body[data-style="manga"] .quiz-nav { align-items: center; margin-top: 24px; }
+body[data-style="manga"] .quiz-hint { margin-top: 24px; font-size: 11px; line-height: 1.9; }
+body[data-style="manga"] .quiz-hint .text-link { font-size: 11px; }
+body[data-style="manga"] .notice { border: 0; border-left: 3px solid var(--accent); background: #f5e6d5; }
+
+/* Result: the card stays intact; typography and gutters form the comic page. */
+body[data-style="manga"] .result-container { max-width: 950px; }
+body[data-style="manga"] .comic-result { padding: 0; border: 2px solid var(--ink); border-top-width: 5px; background: var(--surface); text-align: left; }
+body[data-style="manga"] .result-opening { position: relative; padding: 23px 29px 20px; border-bottom: 1px solid var(--ink); background: linear-gradient(115deg, transparent 76%, #eee4d255 76%); }
+body[data-style="manga"] .result-opening .eyebrow { margin: 0 0 8px; font-size: 9px; }
+body[data-style="manga"] .poster-heading { margin: 0; font-size: 22px; line-height: 1.6; font-weight: 700; }
+body[data-style="manga"] .result-feature { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 35px; align-items: center; padding: 29px; }
+body[data-style="manga"] .result-portrait { min-width: 0; padding: 13px 13px 10px; border: 1px solid var(--ink); background: radial-gradient(#1b1b1930 .65px, transparent .85px) 0 0 / 5px 5px, #eee4d3; }
+body[data-style="manga"] .result-portrait .holo-animation { width: 100%; max-width: 300px; margin: 0 auto; background: transparent; }
+body[data-style="manga"] .result-portrait .holo-animation img { width: 100%; height: auto; object-fit: contain; }
+body[data-style="manga"] .result-portrait .card-download { margin: 10px 0 0; font-size: 10px; }
+body[data-style="manga"] .result-identity { min-width: 0; }
+body[data-style="manga"] .character-label { margin: 0 0 9px; color: var(--accent); font-size: 12px; letter-spacing: 1px; font-weight: 750; }
+body[data-style="manga"] .comic-result .result-name { margin: 0 0 19px; font-family: var(--sans); font-size: 48px; font-weight: 900; line-height: 1.2; letter-spacing: -1px; overflow-wrap: anywhere; }
+body[data-style="manga"] .character-traits { justify-content: flex-start; gap: 7px; margin: 0 0 25px; }
+body[data-style="manga"] .character-traits > span { padding: 4px 9px; border: 0; border-bottom: 1px solid var(--ink); background: transparent; font-size: 11px; }
+body[data-style="manga"] .match-count { margin: 0 0 19px; padding: 8px 15px; gap: 5px; background: var(--accent); color: var(--surface); line-height: 1.4; }
+body[data-style="manga"] .match-count strong { font-size: 32px; font-weight: 850; }
+body[data-style="manga"] .match-count small { font-size: 11px; }
+body[data-style="manga"] .result-identity .fine-print { margin: -6px 0 16px; line-height: 1.8; }
+body[data-style="manga"] .result-core-trait { position: relative; max-width: none; margin: 2px 0 0; padding: 15px 18px; border: 2px solid var(--ink); border-radius: 3px 13px 3px 13px; background: var(--surface); font-size: 18px; line-height: 1.9; font-weight: 750; text-wrap: pretty; }
+body[data-style="manga"] .result-core-trait::before { content: ""; position: absolute; top: 20px; left: -9px; width: 14px; height: 14px; background: var(--surface); border-left: 2px solid var(--ink); border-bottom: 2px solid var(--ink); transform: rotate(45deg); }
+body[data-style="manga"] .poster-conclusion { margin: 0 29px; padding: 23px 0 28px; border-top: 1px solid var(--ink); }
+body[data-style="manga"] .result-conclusion { max-width: none; margin: 0; padding: 0; border: 0; font-size: 14px; line-height: 2.05; color: #4e4942; }
+body[data-style="manga"] .choice-preview { max-width: none; margin: 22px 0 0; padding: 15px 19px; border: 0; border-left: 3px solid var(--accent); background: var(--paper); }
+body[data-style="manga"] .choice-preview small { font-size: 10px; letter-spacing: .5px; }
+body[data-style="manga"] .choice-preview blockquote { margin: 8px 0; font-size: 13px; line-height: 1.9; }
+body[data-style="manga"] .choice-preview p { font-size: 12px; line-height: 1.9; }
+body[data-style="manga"] .character-text-card { width: 100%; margin: 0; }
+body[data-style="manga"] .result-actions { margin: 25px 0; gap: 13px; }
+body[data-style="manga"] .result-note { font-size: 11px; line-height: 1.9; }
+body[data-style="manga"] .report { margin-top: 35px; padding-top: 23px; border-top: 3px solid var(--ink); }
+body[data-style="manga"] .report-title { align-items: center; flex-wrap: wrap; gap: 9px; margin-bottom: 18px; }
+body[data-style="manga"] .report-title h2 { font-family: var(--sans); font-size: 23px; line-height: 1.4; font-weight: 850; letter-spacing: -.5px; }
+body[data-style="manga"] .report-title span { font-size: 9px; letter-spacing: .5px; }
+body[data-style="manga"] .nearby-list { margin-top: 0; border-top: 0; }
+body[data-style="manga"] .nearby-item { gap: 17px; padding: 17px 6px; border-bottom: 1px solid var(--line); }
+body[data-style="manga"] .nearby-rank { display: grid; place-items: center; flex: 0 0 25px; height: 25px; color: var(--surface); background: var(--ink); font-size: 11px; font-weight: 700; }
+body[data-style="manga"] .nearby-name { min-width: 0; }
+body[data-style="manga"] .nearby-name h3 { font-size: 15px; }
+body[data-style="manga"] .nearby-name p { line-height: 1.7; }
+body[data-style="manga"] .nearby-count strong { color: var(--ink); font-size: 12px; }
+body[data-style="manga"] .radar-layout { gap: 30px; }
+body[data-style="manga"] .radar-figure { padding: 15px 22px 20px; background: var(--surface); border: 1px solid var(--line); }
+body[data-style="manga"] .radar-axis strong { font-size: 11px; }
+body[data-style="manga"] .radar-scale { background: #1b1b1922; }
+body[data-style="manga"] .report-block { margin: 28px 0; }
+body[data-style="manga"] .report-block h3 { font-size: 13px; }
+body[data-style="manga"] .report-block p,
+body[data-style="manga"] .report-block li { font-size: 13px; line-height: 2; }
+body[data-style="manga"] .evidence-grid { gap: 12px; }
+body[data-style="manga"] .evidence-card { padding: 19px 22px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--ink); }
+body[data-style="manga"] .evidence-card small { font-size: 10px; }
+body[data-style="manga"] .evidence-card p { font-size: 12px; }
+body[data-style="manga"] .evidence-card blockquote { margin-top: 13px; border-left: 2px solid var(--accent); font-size: 12px; }
+body[data-style="manga"] .character-quote { border-top: 1px solid var(--ink); font-size: 20px; }
+body[data-style="manga"] .character-quote footer { font-size: 10px; }
+body[data-style="manga"] .reset-box { border: 1px solid var(--ink); background: var(--surface); }
+body[data-style="manga"] .status-text { overflow-wrap: anywhere; }
+
+@media (max-width: 900px) {
+  body[data-style="manga"] .comic-cover { min-height: 515px; grid-template-columns: 1.15fr .85fr; }
+  body[data-style="manga"] .hero-copy { padding-left: 27px; }
+  body[data-style="manga"] .comic-cover h1 { font-size: 48px; }
+  body[data-style="manga"] .comic-cover .hero-art img { height: 465px; }
+  body[data-style="manga"] .comic-cover .hero-art figcaption { right: 6px; }
+  body[data-style="manga"] .result-feature { grid-template-columns: minmax(0, 260px) minmax(0, 1fr); gap: 26px; }
+  body[data-style="manga"] .comic-result .result-name { font-size: 42px; }
+}
+
+@media (max-width: 720px) {
+  body[data-style="manga"] .site-header { padding: 17px 20px 15px; gap: 10px; }
+  body[data-style="manga"] .brand { font-size: 13px; }
+  body[data-style="manga"] .brand-mark { width: 34px; height: 34px; font-size: 22px; }
+  body[data-style="manga"] .brand-sub { font-size: 7px; letter-spacing: .5px; }
+  body[data-style="manga"] .site-header > .text-link { font-size: 10px; white-space: nowrap; }
+  body[data-style="manga"] .app-shell { padding: 22px 20px 15px; }
+  body[data-style="manga"] .site-footer { padding: 20px 20px 30px; font-size: 9px; }
+  body[data-style="manga"] .comic-cover { display: block; min-height: 0; }
+  body[data-style="manga"] .hero-copy { padding: 24px 23px 0; }
+  body[data-style="manga"] .comic-cover .eyebrow { margin-bottom: 17px; font-size: 9px; letter-spacing: 1.5px; }
+  body[data-style="manga"] .comic-cover h1 { font-size: 45px; letter-spacing: -1.5px; margin-bottom: 20px; }
+  body[data-style="manga"] .comic-cover h1 > em { font-size: .8em; }
+  body[data-style="manga"] .comic-cover .intro { font-size: 12px; max-width: 26em; }
+  body[data-style="manga"] .comic-cover .meta-row { gap: 29px; margin: 20px 0; }
+  body[data-style="manga"] .meta-item strong { font-size: 21px; }
+  body[data-style="manga"] .meta-item span { font-size: 9px; }
+  body[data-style="manga"] .hero-start .btn { width: 100%; min-width: 0; }
+  body[data-style="manga"] .hero-start .start-note { font-size: 9px; }
+  body[data-style="manga"] .comic-cover .hero-art { height: 290px; margin-top: 10px; padding: 0 25px; }
+  body[data-style="manga"] .comic-cover .hero-art img { height: 290px; width: 78%; max-width: 290px; }
+  body[data-style="manga"] .comic-cover .hero-art::before { inset: 24px 0 0; clip-path: polygon(11% 0, 100% 0, 100% 100%, 0 100%); }
+  body[data-style="manga"] .comic-cover .hero-art::after { display: none; }
+  body[data-style="manga"] .comic-cover .hero-art figcaption { top: 35px; right: 23px; font-size: 9px; }
+  body[data-style="manga"] .ribbon { margin: 14px 0 29px; font-size: 9px; gap: 8px 13px; }
+  body[data-style="manga"] .home-section-title { font-size: 18px; gap: 13px; margin-bottom: 11px; }
+  body[data-style="manga"] .themes-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 19px; }
+  body[data-style="manga"] .theme-card { grid-template-columns: 18px minmax(0, 1fr); gap: 0 7px; padding: 17px 0; }
+  body[data-style="manga"] .theme-card h3 { font-size: 12px; }
+  body[data-style="manga"] .theme-card p { font-size: 10px; }
+  body[data-style="manga"] .cast-strip { gap: 5px; margin: 26px 0; }
+  body[data-style="manga"] .cast-panel { height: 132px; padding: 5px 4px 22px; border-width: 1px; }
+  body[data-style="manga"] .cast-panel span { padding: 3px 5px; font-size: 10px; border-width: 1px; }
+  body[data-style="manga"] .roster-chips { gap: 3px 18px; }
+  body[data-style="manga"] .roster-chips span { font-size: 10px; }
+  body[data-style="manga"] .comic-quiz { padding-top: 5px; }
+  body[data-style="manga"] .quiz-top { font-size: 10px; }
+  body[data-style="manga"] .progress-track { margin-bottom: 22px; }
+  body[data-style="manga"] .question-statement { grid-template-columns: 43px minmax(0, 1fr); gap: 15px; margin-bottom: 27px; padding: 20px 15px; }
+  body[data-style="manga"] .question-statement::after { left: 88px; }
+  body[data-style="manga"] .question-index { padding: 8px 3px; }
+  body[data-style="manga"] .question-index strong { font-size: 34px; }
+  body[data-style="manga"] .question-index small { font-size: 9px; }
+  body[data-style="manga"] .comic-quiz h1 { font-size: 24px; line-height: 1.65; letter-spacing: -.3px; }
+  body[data-style="manga"] .options { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  body[data-style="manga"] .option { min-height: 75px; padding: 16px; font-size: 13px; gap: 13px; }
+  body[data-style="manga"] .option-letter { width: 26px; height: 26px; font-size: 11px; }
+  body[data-style="manga"] .quiz-nav { margin-top: 22px; gap: 11px; }
+  body[data-style="manga"] .quiz-nav .btn { min-height: 44px; padding: 10px 15px; font-size: 11px; gap: 12px; }
+  body[data-style="manga"] .quiz-hint { font-size: 10px; margin-top: 20px; }
+  body[data-style="manga"] .result-opening { padding: 20px 20px 17px; }
+  body[data-style="manga"] .poster-heading { font-size: 18px; }
+  body[data-style="manga"] .result-feature { grid-template-columns: minmax(0, 1fr); gap: 21px; padding: 20px; }
+  body[data-style="manga"] .result-portrait { width: min(100%, 268px); margin: 0 auto; }
+  body[data-style="manga"] .result-portrait .holo-animation { width: min(100%, 238px); }
+  body[data-style="manga"] .result-identity { text-align: center; }
+  body[data-style="manga"] .character-label { font-size: 11px; }
+  body[data-style="manga"] .comic-result .result-name { font-size: 40px; margin-bottom: 17px; }
+  body[data-style="manga"] .character-traits { justify-content: center; margin-bottom: 20px; }
+  body[data-style="manga"] .character-traits > span { font-size: 10px; }
+  body[data-style="manga"] .match-count { margin-bottom: 17px; }
+  body[data-style="manga"] .match-count strong { font-size: 29px; }
+  body[data-style="manga"] .result-core-trait { margin-top: 1px; padding: 13px 15px; font-size: 16px; text-align: left; }
+  body[data-style="manga"] .result-core-trait::before { top: -9px; left: 28px; border-left: 2px solid var(--ink); border-bottom: 0; border-top: 2px solid var(--ink); }
+  body[data-style="manga"] .poster-conclusion { margin: 0 20px; padding: 20px 0 23px; }
+  body[data-style="manga"] .result-conclusion { font-size: 13px; line-height: 2; }
+  body[data-style="manga"] .choice-preview { margin-top: 20px; padding: 14px 14px 15px; }
+  body[data-style="manga"] .choice-preview blockquote { font-size: 12px; }
+  body[data-style="manga"] .choice-preview p { font-size: 11px; }
+  body[data-style="manga"] .result-actions { gap: 12px; margin: 23px 0; }
+  body[data-style="manga"] .result-actions .btn { font-size: 11px; min-height: 43px; padding: 10px 16px; }
+  body[data-style="manga"] .report { margin-top: 29px; padding-top: 20px; }
+  body[data-style="manga"] .report-title h2 { font-size: 21px; }
+  body[data-style="manga"] .report-title span { font-size: 8px; }
+  body[data-style="manga"] .nearby-item { gap: 12px; padding: 16px 0; }
+  body[data-style="manga"] .nearby-rank { flex-basis: 22px; height: 22px; font-size: 10px; }
+  body[data-style="manga"] .nearby-name h3 { font-size: 13px; }
+  body[data-style="manga"] .nearby-name p { font-size: 10px; }
+  body[data-style="manga"] .nearby-count strong { font-size: 10px; }
+  body[data-style="manga"] .radar-figure { padding: 10px 13px 17px; }
+  body[data-style="manga"] .radar-layout { gap: 6px; }
+  body[data-style="manga"] .radar-legend { gap: 15px 16px; }
+  body[data-style="manga"] .evidence-card { padding: 16px 17px; }
+  body[data-style="manga"] .character-quote { font-size: 18px; }
+}
+
+@media (max-width: 360px) {
+  body[data-style="manga"] .app-shell { padding-right: 15px; padding-left: 15px; }
+  body[data-style="manga"] .hero-copy { padding-right: 18px; padding-left: 18px; }
+  body[data-style="manga"] .comic-cover h1 { font-size: 40px; }
+  body[data-style="manga"] .comic-quiz h1 { font-size: 22px; }
+  body[data-style="manga"] .comic-result .result-name { font-size: 35px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-style="manga"] *,
+  body[data-style="manga"] *::before,
+  body[data-style="manga"] *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}

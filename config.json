@@ -1,0 +1,12 @@
+{
+  "apiBase": "https://zyhppxwrabzirqoignbr.supabase.co/functions/v1",
+  "authUrl": "https://zyhppxwrabzirqoignbr.supabase.co",
+  "publishableKey": "sb_publishable_ffXJCuIX5Z11O7uvYKa5wg_D-oXk0db",
+  "works": [
+    {
+      "id": "naruto",
+      "title": "火影忍者",
+      "contentUrl": "data/naruto.json"
+    }
+  ]
+}

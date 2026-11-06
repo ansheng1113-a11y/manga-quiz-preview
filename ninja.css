@@ -1,0 +1,235 @@
+@charset "UTF-8";
+
+/* Ninja theme shared by the test and its visual preview. */
+body[data-theme="ninja"] {
+  --paper: #f3f1e9;
+  --surface: #fffdf6;
+  --ink: #172638;
+  --muted: #697079;
+  --accent: #d95432;
+  --line: #c8cbc7;
+  --soft: #ece8dc;
+  --leaf: #637964;
+  --sand: #bc9b62;
+  --brush: "Kaiti SC", "STKaiti", "KaiTi", "Songti SC", "STSong", serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+body[data-theme="ninja"] .site-header { max-width: 1160px; border-bottom: 1px solid var(--line); padding: 23px 32px; }
+body[data-theme="ninja"] .brand { letter-spacing: .5px; font-weight: 700; }
+body[data-theme="ninja"] .brand-mark { background: var(--ink); width: 42px; height: 42px; border: 0; border-radius: 50%; color: var(--surface); transform: none; }
+body[data-theme="ninja"] .brand-mark .ninja-mon { width: 27px; height: 27px; }
+body[data-theme="ninja"] .brand-sub { color: var(--muted); letter-spacing: 1px; }
+body[data-theme="ninja"] .preview-label { color: var(--accent); letter-spacing: 1.5px; }
+body[data-theme="ninja"] .app-shell { max-width: 1160px; padding: 29px 32px 24px; }
+body[data-theme="ninja"] .site-footer { max-width: 1160px; border-top: 1px solid var(--line); }
+body[data-theme="ninja"] .eyebrow { color: var(--accent); letter-spacing: 2px; font-weight: 650; }
+body[data-theme="ninja"] .btn { position: relative; border: 1px solid var(--accent); border-radius: 2px; background: var(--accent); box-shadow: 0 3px 0 #a73c25; color: var(--surface); font-weight: 650; letter-spacing: 1px; transition: background .18s, transform .18s, box-shadow .18s; }
+body[data-theme="ninja"] .btn:hover { background: #c54729; border-color: #c54729; box-shadow: 0 3px 0 #923722; }
+body[data-theme="ninja"] .btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #a73c25; }
+body[data-theme="ninja"] .ninja-button-icon { display: block; width: 20px; height: 20px; flex-shrink: 0; }
+body[data-theme="ninja"] .ninja-button-icon svg { display: block; width: 100%; height: 100%; }
+body[data-theme="ninja"] .btn.secondary { border: 1px solid var(--line); background: var(--surface); color: var(--ink); box-shadow: none; }
+body[data-theme="ninja"] .btn.secondary:hover { border-color: var(--ink); background: var(--soft); }
+body[data-theme="ninja"] .btn:focus-visible,
+body[data-theme="ninja"] .option:focus-visible { outline: 3px solid var(--leaf); outline-offset: 4px; }
+
+/* A paper frontispiece and an indigo portrait form one opening spread. */
+body[data-theme="ninja"] .comic-cover { position: relative; overflow: hidden; isolation: isolate; grid-template-columns: 1.1fr .9fr; min-height: 575px; border: 1px solid #b8bdbb; border-top: 4px solid var(--ink); background: var(--surface); box-shadow: 0 8px 25px #17263808; }
+body[data-theme="ninja"] .hero-copy { z-index: 2; padding: 38px 0 35px 38px; }
+body[data-theme="ninja"] .comic-cover .eyebrow { display: flex; align-items: center; gap: 11px; margin-bottom: 24px; }
+body[data-theme="ninja"] .ninja-scroll-label { display: inline-flex; gap: 9px; align-items: center; }
+body[data-theme="ninja"] .ninja-scroll-label::before { content: ""; width: 20px; height: 1px; background: currentColor; }
+body[data-theme="ninja"] .comic-cover h1 { margin-bottom: 21px; font-family: var(--brush); font-size: clamp(48px, 4.7vw, 65px); line-height: 1.13; letter-spacing: -2px; font-weight: 900; }
+body[data-theme="ninja"] .comic-cover h1 > em { margin: 7px 0 8px -6px; padding: 0 6px 2px; color: var(--accent); background: transparent; transform: none; font-family: var(--brush); font-style: normal; font-size: .85em; letter-spacing: -2px; }
+body[data-theme="ninja"] .comic-cover .intro { max-width: 26em; font-size: 13px; color: #5e6670; line-height: 1.95; }
+body[data-theme="ninja"] .comic-cover .meta-row { gap: 31px; margin: 23px 0 25px; }
+body[data-theme="ninja"] .meta-item strong { font-family: Arial, var(--sans); font-weight: 500; font-size: 25px; }
+body[data-theme="ninja"] .meta-item span { color: #67727b; }
+body[data-theme="ninja"] .hero-start .btn { min-width: 228px; }
+body[data-theme="ninja"] .hero-start .start-note { max-width: 32em; font-size: 10px; }
+body[data-theme="ninja"] .comic-cover .hero-art { z-index: 1; padding: 35px 0 0; background: var(--ink); margin: 0; }
+body[data-theme="ninja"] .comic-cover .hero-art::before { inset: 83px 15px 78px -15px; border: 1px solid #bc9b624d; background: transparent; border-radius: 50%; clip-path: none; }
+body[data-theme="ninja"] .comic-cover .hero-art::after { top: 106px; bottom: 101px; left: 6px; width: calc(100% - 36px); border: 1px solid #bc9b622b; border-radius: 50%; background: transparent; transform: none; }
+body[data-theme="ninja"] .comic-cover .hero-art img { position: relative; z-index: 1; width: 108%; max-width: 465px; height: 525px; object-fit: contain; object-position: center bottom; }
+body[data-theme="ninja"] .comic-cover .hero-art figcaption { z-index: 2; top: 24px; right: 18px; padding: 11px 7px; background: transparent; border-top: 1px solid var(--sand); color: #d0c5ac; font-family: var(--brush); font-size: 13px; letter-spacing: 3px; }
+body[data-theme="ninja"] .ribbon { margin: 16px 0 34px; border: 0; padding: 12px 1px; color: var(--muted); font-size: 10px; }
+body[data-theme="ninja"] .ribbon span:first-child { color: var(--leaf); }
+body[data-theme="ninja"] .home-section-title { margin-bottom: 17px; font-family: var(--brush); font-size: 25px; font-weight: 700; letter-spacing: 1px; }
+body[data-theme="ninja"] .home-section-title::after { height: 1px; background: var(--line); }
+body[data-theme="ninja"] .cast-strip { margin: 23px 0 32px; gap: 12px; }
+body[data-theme="ninja"] .cast-panel { padding: 9px 9px 28px; border: 1px solid #b9beb9; background: #e4e6de; }
+body[data-theme="ninja"] .cast-panel span { background: var(--ink); color: var(--surface); border: 0; font-size: 11px; letter-spacing: 1px; }
+body[data-theme="ninja"] .themes-grid { gap: 0 25px; }
+body[data-theme="ninja"] .theme-card { border-bottom: 1px solid var(--line); background: transparent; }
+body[data-theme="ninja"] .theme-card > span { color: var(--leaf); }
+body[data-theme="ninja"] .theme-card h3 { letter-spacing: .5px; }
+body[data-theme="ninja"] .roster-chips span { color: #5e6871; }
+
+/* Scroll edges stay outside the reading area; all four answers are equal. */
+body[data-theme="ninja"] .comic-quiz { max-width: 790px; padding-top: 11px; }
+body[data-theme="ninja"] .quiz-top { color: #5e6871; font-size: 11px; }
+body[data-theme="ninja"] .quiz-top > span:last-child { color: var(--ink); }
+body[data-theme="ninja"] .progress-track { height: 4px; margin-bottom: 34px; background: #dce0da; border-radius: 2px; }
+body[data-theme="ninja"] .progress-track i { background: var(--leaf); border-radius: 2px; }
+body[data-theme="ninja"] .question-statement { position: relative; margin: 0 8px 27px; padding: 29px 24px; border: 1px solid #c8c2b3; border-top: 0; border-bottom: 0; border-radius: 0; background: linear-gradient(90deg,#e6decb 0, #fffdf6 18px, #fffdf6 calc(100% - 18px),#e6decb 100%); box-shadow: 0 5px 12px #17263806; grid-template-columns: 66px minmax(0,1fr); gap: 23px; }
+body[data-theme="ninja"] .question-statement::before,
+body[data-theme="ninja"] .question-statement::after { content: ""; position: absolute; left: -8px; right: -8px; width: auto; height: 8px; border: 1px solid #263746; border-radius: 3px; background: linear-gradient(#334454,#172638); transform: none; }
+body[data-theme="ninja"] .question-statement::before { top: -6px; }
+body[data-theme="ninja"] .question-statement::after { bottom: -6px; }
+body[data-theme="ninja"] .question-index { align-self: start; margin-top: 3px; padding: 8px 4px; gap: 7px; border: 1px solid var(--accent); border-radius: 0; box-shadow: none; background: transparent; color: var(--accent); }
+body[data-theme="ninja"] .question-index small { color: var(--accent); letter-spacing: 1px; }
+body[data-theme="ninja"] .question-index strong { font-family: Arial, var(--sans); color: var(--accent); font-weight: 500; font-size: 36px; }
+body[data-theme="ninja"] .comic-quiz h1 { font-family: var(--sans); font-size: 28px; line-height: 1.7; font-weight: 650; letter-spacing: 0; }
+body[data-theme="ninja"] .options { gap: 13px; }
+body[data-theme="ninja"] .option { min-height: 100px; padding: 19px 20px; border: 1px solid #bec5c5; border-radius: 2px; box-shadow: none; background: var(--surface); font-size: 14px; color: var(--ink); transition: background .15s,border-color .15s; }
+body[data-theme="ninja"] .option-letter { width: 29px; height: 29px; border: 1px solid #bdc5c8; border-radius: 50%; background: transparent; color: var(--ink); font-family: Georgia,serif; font-size: 12px; }
+body[data-theme="ninja"] .option:hover { border-color: var(--ink); background: #eeeee5; }
+body[data-theme="ninja"] .option[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--surface); box-shadow: inset 3px 0 var(--accent); }
+body[data-theme="ninja"] .option[aria-pressed="true"] .option-letter { border-color: #c7c5b6; background: transparent; color: var(--surface); }
+body[data-theme="ninja"] .quiz-nav { margin-top: 25px; }
+body[data-theme="ninja"] .quiz-hint { color: var(--muted); }
+
+/* An indigo portrait mount frames the original, uncropped holo card. */
+body[data-theme="ninja"] .comic-result { position: relative; overflow: hidden; border: 1px solid #b8bfbc; border-top: 4px solid var(--ink); background: var(--surface); }
+body[data-theme="ninja"] .result-opening { padding: 22px 29px 20px; border-bottom: 1px solid var(--line); background: var(--ink); color: var(--surface); }
+body[data-theme="ninja"] .result-opening .eyebrow { color: #c7b58c; font-size: 9px; }
+body[data-theme="ninja"] .poster-heading { font-family: var(--brush); font-size: 27px; font-weight: 500; letter-spacing: 1px; }
+body[data-theme="ninja"] .result-feature { padding: 29px; gap: 34px; }
+body[data-theme="ninja"] .result-portrait { position: relative; overflow: hidden; border: 1px solid #182b3c; padding: 13px 13px 10px; background: var(--ink); }
+body[data-theme="ninja"] .result-portrait::before { content: ""; position: absolute; inset: 5px; border: 1px solid #bc9b6270; pointer-events: none; }
+body[data-theme="ninja"] .result-portrait .holo-animation { position: relative; max-width: 300px; background: transparent; }
+body[data-theme="ninja"] .result-portrait .holo-animation img { height: auto; object-fit: contain; }
+body[data-theme="ninja"] .result-portrait .card-download { position: relative; color: #c5c5b9; letter-spacing: 2px; font-size: 9px; }
+body[data-theme="ninja"] .character-label { color: var(--leaf); font-size: 12px; letter-spacing: 2px; }
+body[data-theme="ninja"] .comic-result .result-name { margin-bottom: 17px; font-family: var(--brush); font-weight: 900; font-size: 54px; letter-spacing: 1px; }
+body[data-theme="ninja"] .character-traits { gap: 9px; margin-bottom: 21px; }
+body[data-theme="ninja"] .character-traits > span { padding: 3px 8px; border: 1px solid #c9cfca; color: #566758; font-size: 10px; background: #f2f3eb; }
+body[data-theme="ninja"] .match-count { margin-bottom: 19px; padding: 7px 16px; background: transparent; color: var(--ink); border: 1px solid var(--sand); border-left: 3px solid var(--accent); }
+body[data-theme="ninja"] .match-count strong { color: var(--accent); font-family: Arial, var(--sans); font-size: 35px; font-weight: 500; }
+body[data-theme="ninja"] .match-count span { font-size: 12px; }
+body[data-theme="ninja"] .result-core-trait { padding: 13px 0 0; border: 0; border-top: 1px solid var(--line); border-radius: 0; background: transparent; font-family: var(--brush); font-weight: 600; font-size: 22px; line-height: 1.7; }
+body[data-theme="ninja"] .result-core-trait::before { display: none; }
+body[data-theme="ninja"] .poster-conclusion { border-top: 1px solid var(--line); }
+body[data-theme="ninja"] .result-conclusion { color: #53606a; }
+body[data-theme="ninja"] .choice-preview { background: #f0f0e8; border-left: 2px solid var(--leaf); }
+body[data-theme="ninja"] .choice-preview a { color: var(--leaf); }
+body[data-theme="ninja"] .report { border-top: 1px solid var(--line); }
+body[data-theme="ninja"] .report-title h2 { font-family: var(--brush); font-size: 27px; font-weight: 600; letter-spacing: 1px; }
+body[data-theme="ninja"] .nearby-rank { background: var(--leaf); }
+body[data-theme="ninja"] .nearby-count strong { color: var(--ink); }
+body[data-theme="ninja"] .radar-figure { border-color: var(--line); }
+body[data-theme="ninja"] .radar-shape { fill: var(--leaf); stroke: var(--leaf); }
+body[data-theme="ninja"] .radar-point,
+body[data-theme="ninja"] .radar-scale i { fill: var(--leaf); background: var(--leaf); }
+body[data-theme="ninja"] .preview-navigation { border-color: var(--line); color: var(--muted); }
+
+/* Local motifs and brief decorative feedback never cover the copy. */
+body[data-theme="ninja"] .ninja-mon { display: inline-block; flex-shrink: 0; width: 30px; height: 30px; color: inherit; }
+body[data-theme="ninja"] .ninja-mon svg { display: block; width: 100%; height: 100%; }
+body[data-theme="ninja"] .ninja-cloud,
+body[data-theme="ninja"] .ninja-clouds { position: absolute; z-index: 0; height: auto; pointer-events: none; color: #c4b48e; opacity: .15; }
+body[data-theme="ninja"] .hero-art > .ninja-cloud,
+body[data-theme="ninja"] .hero-art > .ninja-clouds { width: 200px; max-width: 70%; top: 48px; left: 2px; }
+body[data-theme="ninja"] .hero-art > .ninja-cloud-two { width: 180px; top: auto; bottom: 42px; left: auto; right: -35px; opacity: .12; }
+body[data-theme="ninja"] .hero-art > .ninja-mon { position: absolute; z-index: 0; bottom: 30px; left: 20px; width: 45px; height: 45px; color: #c4b48e; opacity: .2; }
+body[data-theme="ninja"] .ninja-cloud svg,
+body[data-theme="ninja"] .ninja-clouds svg { width: 100%; height: auto; display: block; }
+
+/* The retained comparison styles share the new markup without ninja motifs. */
+body:not([data-theme="ninja"]) .ninja-cloud,
+body:not([data-theme="ninja"]) .ninja-mon { display: none; }
+body:not([data-theme="ninja"]) .comic-cover h1 > span,
+body:not([data-theme="ninja"]) .comic-cover h1 > em { display: block; }
+body:not([data-theme="ninja"]) .cast-strip { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; margin: 24px 0; }
+body:not([data-theme="ninja"]) .cast-panel { min-width: 0; font-size: 10px; }
+body:not([data-theme="ninja"]) .cast-panel img { display: block; width: 100%; height: auto; }
+body:not([data-theme="ninja"]) .question-index strong { display: block; }
+body:not([data-theme="ninja"]) .question-index small { font-size: 11px; }
+
+@media (max-width: 900px) {
+  body[data-theme="ninja"] .comic-cover { min-height: 540px; }
+  body[data-theme="ninja"] .hero-copy { padding-left: 28px; }
+  body[data-theme="ninja"] .comic-cover h1 { font-size: 51px; }
+  body[data-theme="ninja"] .comic-cover .hero-art img { height: 490px; }
+  body[data-theme="ninja"] .comic-result .result-name { font-size: 46px; }
+}
+@media (max-width: 720px) {
+  body[data-theme="ninja"] .site-header { padding: 18px 20px 16px; }
+  body[data-theme="ninja"] .brand { font-size: 13px; }
+  body[data-theme="ninja"] .brand-mark { width: 35px; height: 35px; }
+  body[data-theme="ninja"] .brand-mark .ninja-mon { width: 23px; height: 23px; }
+  body[data-theme="ninja"] .app-shell { padding: 21px 20px 16px; }
+  body[data-theme="ninja"] .site-footer { padding: 22px 20px 28px; }
+  body[data-theme="ninja"] .comic-cover { display: block; min-height: 0; }
+  body[data-theme="ninja"] .hero-copy { padding: 25px 23px 24px; }
+  body[data-theme="ninja"] .comic-cover .eyebrow { margin-bottom: 17px; font-size: 9px; letter-spacing: 1px; }
+  body[data-theme="ninja"] .comic-cover h1 { font-size: 48px; letter-spacing: -2px; margin-bottom: 17px; }
+  body[data-theme="ninja"] .comic-cover h1 > em { font-size: .86em; }
+  body[data-theme="ninja"] .comic-cover .intro { font-size: 12px; line-height: 1.85; }
+  body[data-theme="ninja"] .comic-cover .meta-row { gap: 30px; margin: 19px 0 21px; }
+  body[data-theme="ninja"] .meta-item strong { font-size: 24px; }
+  body[data-theme="ninja"] .hero-start .btn { width: 100%; min-width: 0; }
+  body[data-theme="ninja"] .hero-start .start-note { font-size: 9px; line-height: 1.75; margin-top: 12px; }
+  body[data-theme="ninja"] .comic-cover .hero-art { height: 270px; margin: 0; padding: 0 25px; }
+  body[data-theme="ninja"] .comic-cover .hero-art img { width: 88%; height: 285px; max-width: 300px; margin-top: -15px; }
+  body[data-theme="ninja"] .comic-cover .hero-art::before { inset: 23px 30px 20px; }
+  body[data-theme="ninja"] .comic-cover .hero-art::after { display: block; top: 43px; bottom: 40px; left: 50px; width: calc(100% - 100px); }
+  body[data-theme="ninja"] .comic-cover .hero-art figcaption { top: 21px; right: 17px; font-size: 11px; }
+  body[data-theme="ninja"] .hero-art > .ninja-cloud,
+  body[data-theme="ninja"] .hero-art > .ninja-clouds { width: 160px; top: 38px; left: -25px; }
+  body[data-theme="ninja"] .hero-art > .ninja-cloud-two { width: 150px; top: auto; bottom: 20px; left: auto; right: -25px; }
+  body[data-theme="ninja"] .hero-art > .ninja-mon { width: 30px; height: 30px; bottom: 20px; left: 18px; }
+  body[data-theme="ninja"] .ribbon { margin: 12px 0 27px; gap: 7px; font-size: 9px; }
+  body[data-theme="ninja"] .home-section-title { font-size: 23px; margin-bottom: 13px; }
+  body[data-theme="ninja"] .cast-strip { gap: 7px; margin: 20px 0 29px; }
+  body[data-theme="ninja"] .cast-panel { height: 132px; padding: 5px 4px 23px; }
+  body[data-theme="ninja"] .cast-panel span { padding: 4px 5px; font-size: 9px; letter-spacing: 0; }
+  body[data-theme="ninja"] .themes-grid { gap: 0 19px; }
+  body[data-theme="ninja"] .comic-quiz { padding-top: 7px; }
+  body[data-theme="ninja"] .quiz-top { font-size: 10px; }
+  body[data-theme="ninja"] .progress-track { margin-bottom: 31px; }
+  body[data-theme="ninja"] .question-statement { margin: 0 7px 27px; padding: 23px 15px; grid-template-columns: 43px minmax(0,1fr); gap: 15px; }
+  body[data-theme="ninja"] .question-index { padding: 8px 2px; }
+  body[data-theme="ninja"] .question-index strong { font-size: 29px; }
+  body[data-theme="ninja"] .question-index small { font-size: 9px; }
+  body[data-theme="ninja"] .comic-quiz h1 { font-size: 23px; line-height: 1.7; }
+  body[data-theme="ninja"] .options { gap: 11px; }
+  body[data-theme="ninja"] .option { min-height: 75px; padding: 16px; font-size: 13px; gap: 14px; }
+  body[data-theme="ninja"] .option-letter { width: 26px; height: 26px; font-size: 11px; }
+  body[data-theme="ninja"] .quiz-nav { margin-top: 23px; }
+  body[data-theme="ninja"] .quiz-hint { margin-top: 23px; line-height: 1.9; }
+  body[data-theme="ninja"] .result-opening { padding: 19px 20px 17px; }
+  body[data-theme="ninja"] .result-opening .eyebrow { font-size: 8px; letter-spacing: 1px; }
+  body[data-theme="ninja"] .poster-heading { font-size: 21px; letter-spacing: 0; }
+  body[data-theme="ninja"] .result-feature { padding: 22px 20px 21px; gap: 22px; }
+  body[data-theme="ninja"] .result-portrait { width: min(100%,258px); padding: 12px 12px 10px; }
+  body[data-theme="ninja"] .result-portrait .holo-animation { width: min(100%,232px); }
+  body[data-theme="ninja"] .result-portrait .card-download { margin-top: 10px; font-size: 8px; }
+  body[data-theme="ninja"] .character-label { margin-bottom: 8px; font-size: 11px; }
+  body[data-theme="ninja"] .comic-result .result-name { margin-bottom: 14px; font-size: 43px; }
+  body[data-theme="ninja"] .character-traits { margin-bottom: 18px; }
+  body[data-theme="ninja"] .character-traits > span { font-size: 10px; }
+  body[data-theme="ninja"] .match-count { margin-bottom: 17px; padding: 6px 14px; }
+  body[data-theme="ninja"] .match-count strong { font-size: 31px; }
+  body[data-theme="ninja"] .result-core-trait { padding-top: 13px; font-size: 21px; text-align: center; }
+  body[data-theme="ninja"] .poster-conclusion { margin: 0 20px; }
+  body[data-theme="ninja"] .result-conclusion { font-size: 13px; }
+  body[data-theme="ninja"] .report-title h2 { font-size: 25px; }
+}
+@media (max-width: 360px) {
+  body[data-theme="ninja"] .app-shell { padding-left: 15px; padding-right: 15px; }
+  body[data-theme="ninja"] .hero-copy { padding-left: 18px; padding-right: 18px; }
+  body[data-theme="ninja"] .comic-cover h1 { font-size: 43px; }
+  body[data-theme="ninja"] .comic-quiz h1 { font-size: 21px; }
+  body[data-theme="ninja"] .poster-heading { font-size: 18px; }
+  body[data-theme="ninja"] .comic-result .result-name { font-size: 38px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body[data-theme="ninja"] *,
+  body[data-theme="ninja"] *::before,
+  body[data-theme="ninja"] *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  body[data-theme="ninja"] .ninja-petals,
+  body[data-theme="ninja"] .ninja-shuriken-burst { display: none; }
+}

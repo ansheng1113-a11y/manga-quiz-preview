@@ -1,0 +1,14 @@
+/* Small decorative effects for the ninja preview only. */
+body[data-theme="ninja"] .hero-start .btn { position: relative; overflow: hidden; }
+body[data-theme="ninja"] .ninja-button-icon { display: inline-flex; width: 24px; height: 24px; flex: 0 0 24px; }
+body[data-theme="ninja"] .ninja-button-icon svg { display: block; width: 100%; height: 100%; }
+body[data-theme="ninja"] .is-throwing .ninja-button-icon { animation: ninja-throw .36s ease-in forwards; }
+body[data-theme="ninja"] .ninja-petals { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 5; }
+body[data-theme="ninja"] .app-shell[data-page]:not([data-page="home"]) ~ .ninja-petals { display: none; }
+body[data-theme="ninja"] .ninja-petal { position: absolute; top: -18px; left: var(--petal-x); width: 8px; height: 13px; background: #dfb6ac; border-radius: 80% 0 80% 35%; opacity: 0; animation: ninja-petal-fall var(--petal-duration) linear forwards; }
+@keyframes ninja-throw { from { transform: translate(0,0) rotate(0); } to { transform: translate(115px,-9px) rotate(540deg); opacity: 0; } }
+@keyframes ninja-petal-fall { 0% { opacity: 0; transform: translate(0,-10px) rotate(0); } 10% { opacity: .65; } 85% { opacity: .5; } 100% { opacity: 0; transform: translate(var(--petal-drift),58vh) rotate(310deg); } }
+@media (prefers-reduced-motion: reduce) {
+  body[data-theme="ninja"] .ninja-petals { display: none; }
+  body[data-theme="ninja"] .is-throwing .ninja-button-icon { animation: none; }
+}
