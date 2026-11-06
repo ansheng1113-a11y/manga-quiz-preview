@@ -64,7 +64,8 @@ async function token() {
 }
 async function api(path, { method = 'GET', body, download = false } = {}) {
   const response = await fetch(`${config.apiBase.replace(/\/$/, '')}/quiz-admin/${path}`, {
-    method, headers: { Authorization: `Bearer ${await token()}`, ...(body ? { 'Content-Type': 'application/json' } : {}) },
+    method, headers: { Authorization: `Bearer ${await token()}`, apikey: config.publishableKey,
+      ...(body ? { 'Content-Type': 'application/json' } : {}) },
     ...(body ? { body: JSON.stringify(body) } : {}), cache: 'no-store'
   });
   if (!response.ok) {
