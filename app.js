@@ -2,6 +2,8 @@ import { ApiError, apiConfigured, apiRequest, codeFingerprint, draftStorageKey, 
 import { createAutoAdvance } from './auto-advance.js';
 import { renderRadar } from './radar.js';
 import { runNinjaStart } from './ninja-motion.js';
+import { fetchGif, publicEntryUrl } from './media.js';
+import { createResultPoster } from './poster.js';
 
 const root = document.querySelector('#app');
 const h = value => String(value ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
@@ -9,6 +11,7 @@ const autoAdvance = createAutoAdvance(advanceQuestion);
 const codeKey = workId => `manga-quiz-delivery.code:${workId}`;
 let config, work, quiz, access, code = '', fingerprint, draft, draftKey, pointerKey, result;
 let versionNotice = '', storageAvailable = true, busy = false, readOnly = false, readIndex = 0, exportedUrl;
+let clearResultMedia = () => {}, exportedResultId;
 
 function readStorage(storage, key) {
   try { return JSON.parse(storage.getItem(key)); } catch { return null; }
@@ -92,6 +95,7 @@ function bindSessionBar() {
 }
 
 function renderHome() {
+  clearResultMedia();
   autoAdvance.cancel(); root.dataset.page = 'home'; readOnly = false;
   const answered = Object.keys(draft?.answers || {}).length;
   const cast = quiz.characters.filter(character => ['naruto', 'sasuke', 'sakura', 'kakashi'].includes(character.id));
@@ -103,7 +107,7 @@ function renderHome() {
         <p class="intro">直说，还是绕个弯？坚持，还是换条路？从日常里的选择，找到与你接近的人物。</p>
         <div class="meta-row"><div class="meta-item"><strong>${quiz.questions.length}</strong><span>日常选择</span></div><div class="meta-item"><strong>${quiz.characters.length}</strong><span>人物原型</span></div><div class="meta-item"><strong>${quiz.axes.length}</strong><span>作答取向</span></div></div>
         ${access ? `<div class="hero-start"><button id="start" class="btn" ${!draft.pending && !newAllowed() ? 'disabled' : ''}>${draft.pending ? '确认上次提交' : answered ? '继续我的卷轴' : '展开忍者卷轴'} →</button><p class="start-note">${answered ? `已保存 ${answered} / ${quiz.questions.length} 道选择 · ` : ''}无需剧情知识 · 可随时停下，草稿自动保留</p></div>` : `<form id="access-form" class="code-form"><label for="redemption-code">输入你收到的兑换码</label><input id="redemption-code" name="code" type="text" maxlength="100" autocomplete="off" autocapitalize="characters" spellcheck="false" required placeholder="请输入兑换码" ${!apiConfigured(config) ? 'disabled' : ''}><button class="btn" type="submit" ${!apiConfigured(config) ? 'disabled' : ''}>验证兑换码 →</button><p class="code-note">每码可生成3份结果。刷新、续答和查看已有档案不扣次数。</p>${!apiConfigured(config) ? '<p class="notice">交付服务尚未配置，当前可浏览测试介绍。</p>' : ''}<p class="delivery-message" role="status"></p></form>`}
-      </div><figure class="hero-art hero-illustration"><img src="cards/kakashi/assets/hero-subject.png" alt="旗木卡卡西角色插画"><figcaption>你的忍道，由你选择。</figcaption></figure>
+      </div><figure class="hero-art hero-illustration"><picture><source type="image/webp" srcset="cards/kakashi/assets/hero-subject.webp"><img src="cards/kakashi/assets/hero-subject.png" width="1024" height="1536" fetchpriority="high" decoding="async" alt="旗木卡卡西角色插画"></picture><figcaption>你的忍道，由你选择。</figcaption></figure>
     </section>
     ${access ? `<section class="history-section"><h2 class="home-section-title">我的结果档案</h2>${history.length ? `<div class="history-list">${history.map(item => `<button class="history-item" data-result-id="${h(item.resultId)}"><span><strong>${h(item.characterName)}</strong><small>${h(dateText(item.createdAt))}</small></span><span>${item.matchCount} / ${item.totalQuestions} 题符合 <span aria-hidden="true">↗</span></span></button>`).join('')}</div>` : '<p class="muted">还没有生成档案。完成卷轴后，你的结果会保存在这里。</p>'}</section>` : ''}
     <div class="ribbon"><span>循自己的心意选择</span><span>点选后自动进入下一题 →</span></div>
@@ -137,6 +141,7 @@ async function verifyCode(event) {
 }
 
 function renderQuestion(snapshot = false) {
+  clearResultMedia();
   autoAdvance.cancel(); root.dataset.page = 'quiz'; readOnly = snapshot;
   if (snapshot && result.questionVersion !== quiz.questionVersion) {
     renderResult(); showMessage('这份档案使用旧版题目，当前页面不将旧答案套入新题。'); return;
@@ -190,6 +195,7 @@ function advanceQuestion() {
 }
 
 function renderReview(message = '') {
+  clearResultMedia();
   autoAdvance.cancel(); root.dataset.page = 'review'; readOnly = false;
   const pending = draft.pending;
   root.innerHTML = `${sessionBar()}<section class="delivery-review"><div class="eyebrow">人物之卷 / ${pending ? '确认提交' : '准备生成'}</div><h1>${pending ? '确认上次提交的结果' : '你的卷轴，已经写好了。'}</h1><p>${pending ? '上次提交尚未收到完整确认。原请求编号与答案已保存，重试会确认同一份结果，不会另起一次测试。' : `已完成${quiz.questions.length}道选择。成功生成这份新档案将使用1次，刷新或重试同一提交不重复扣次。`}</p><p class="delivery-message ${message ? 'is-error' : ''}" role="status">${h(message)}</p><div class="result-actions"><button id="submit-result" class="btn" ${!pending && !newAllowed() ? 'disabled' : ''}>${pending ? '重试确认结果 →' : '提交并生成档案（使用1次）'}</button>${!pending ? '<button id="edit-draft" class="btn secondary">返回修改</button>' : ''}<button id="review-home" class="btn secondary">返回首页</button></div><p class="fine-print">只有交付服务成功保存结果后，才会使用兑换次数。</p></section>`;
@@ -247,14 +253,16 @@ async function openResult(resultId, button) {
 }
 
 function renderResult() {
+  clearResultMedia();
   autoAdvance.cancel(); root.dataset.page = 'result'; readOnly = false;
   const entry = result.primary, character = entry.character, first = result.evidence[0], different = result.difference;
   const sameQuestions = result.questionVersion === quiz.questionVersion;
   const choice = item => `<article class="evidence-card" data-question-id="${h(item.question.id)}"><small>${h(item.question.title)}</small><blockquote>你选了：“${h(item.option.text)}”</blockquote><p>${h(item.explanation)}</p></article>`;
   root.innerHTML = `${sessionBar()}<section class="result-container"><article class="result-poster-layout comic-result"><div class="result-opening"><div class="eyebrow">人物之卷 / 测试结果</div><p class="poster-heading">你是《${h(work.title)}》中的——</p></div>
-    <div class="result-feature"><div class="result-portrait"><picture class="holo-animation"><source media="(prefers-reduced-motion: reduce)" srcset="${h(asset(character.card.still))}"><img src="${h(asset(character.card.animation))}" data-still="${h(asset(character.card.still))}" width="360" height="500" alt="${h(character.name)}自动流光闪卡" decoding="async"></picture><p class="card-download"><a href="${h(asset(character.card.animation))}" download="${h(character.name)}-闪卡.gif">保存角色闪卡 GIF ↓</a></p></div>
+    <div class="result-feature"><div class="result-portrait"><picture class="holo-animation"><img id="result-portrait" src="${h(asset(character.card.still))}" data-still="${h(asset(character.card.still))}" width="360" height="500" alt="${h(character.name)}静态闪卡" decoding="async" fetchpriority="high"></picture><div class="card-download"><button id="play-animation" class="text-link" type="button" aria-pressed="false">播放流光闪卡</button><button id="save-animation" class="text-link" type="button">保存 GIF ↓</button><p id="animation-status" role="status"></p></div></div>
     <div class="result-identity"><div class="character-label">${h(character.archetypeLabel)}</div><h1 class="result-name">${h(character.name)}</h1><div class="character-traits">${character.keywords.map(word => `<span>${h(word)}</span>`).join('')}</div><div class="match-count"><strong>${entry.matchCount}</strong><span>／${result.totalQuestions}题符合</span></div>${result.tieCount > 1 ? `<p class="fine-print">有${result.tieCount}位人物同分，按固定名单顺序展示主卡。</p>` : ''}<p class="result-core-trait">${h(character.epithet)}</p>${first ? `<aside class="choice-preview"><small>你的选择中，有这样一个对应点</small><blockquote>你选了：“${h(first.option.text)}”</blockquote><p>${h(first.explanation)}</p><a href="#result-evidence">查看作答依据 →</a></aside>` : ''}</div></div><div class="poster-conclusion"><p class="result-conclusion">${h(character.resultConclusion)}</p></div></article>
-    <div class="result-actions"><button id="save-card" class="btn">保存结果卡 ↓</button><button id="read-answers" class="btn secondary" ${!sameQuestions ? 'disabled' : ''}>回看原作答</button><button id="copy-answers" class="btn secondary" ${!newAllowed() || draft.pending ? 'disabled' : ''}>修改后重新生成</button><button id="result-home" class="btn secondary">我的档案</button></div>
+    <div class="result-actions"><button id="save-card" class="btn">生成分享结果卡 ↓</button><button id="copy-test-link" class="btn secondary">复制测试链接</button><button id="read-answers" class="btn secondary" ${!sameQuestions ? 'disabled' : ''}>回看原作答</button><button id="copy-answers" class="btn secondary" ${!newAllowed() || draft.pending ? 'disabled' : ''}>修改后重新生成</button><button id="result-home" class="btn secondary">我的档案</button></div>
+    <div id="share-link-status" class="status-text" role="status"></div>
     <p class="fine-print">查看和保存本档案不扣次数。修改答案会复制为新草稿，再次生成新结果使用1次。</p><div id="copy-confirm" class="copy-confirm" hidden><p>${sameQuestions ? '将原答案复制为一份新草稿，原结果继续保留。' : '题目情景已更新，将开始一份空白草稿。'}${Object.keys(draft.answers).length ? '当前未提交的草稿会被替换。' : ''}提交新草稿成功后使用1次。</p><button id="confirm-copy" class="btn small">${sameQuestions ? '复制并修改' : '开始新草稿'}</button><button id="cancel-copy" class="btn secondary small">保留原档案</button></div>
     <div id="export-status" class="status-text" role="status"></div>
     <section class="report"><div class="report-title"><h2>接近人物</h2><span>第2–4名</span></div><div class="nearby-list">${result.nearby.map((item, index) => `<article class="nearby-item"><span class="nearby-rank">${String(index + 2).padStart(2, '0')}</span><div class="nearby-name"><h3>${h(item.character.name)}</h3><p>${h(item.character.archetypeLabel)}</p></div><div class="nearby-count"><strong>${item.matchCount}／${result.totalQuestions}题符合</strong>${item.isTied ? '<small>同分</small>' : ''}</div></article>`).join('')}</div></section>
@@ -265,7 +273,19 @@ function renderResult() {
       <details class="report-block"><summary>展开人物性格分析</summary><div class="report-block"><h3>这个人物在意什么</h3><p>${h(character.motivation)}</p></div><div class="comparison-grid"><section class="comparison-box"><h3>这种方式能带来什么</h3><ul>${character.strengths.map(item => `<li>${h(item)}</li>`).join('')}</ul></section><section class="comparison-box"><h3>可能付出的代价</h3><ul>${character.costs.map(item => `<li>${h(item)}</li>`).join('')}</ul></section></div><div class="report-block"><h3>这个人物怎样与人相处</h3><p>${h(character.relationships)}</p></div><div class="report-block"><h3>如果这些侧面也像你</h3><ul>${character.advice.map(item => `<li>${h(item)}</li>`).join('')}</ul></div></details>
     </section><p class="result-note">符合数表示本次选择与人物代表答案一致的题数。日常情景为性格推演，结果供趣味参考。</p></section>`;
   bindSessionBar();
+  bindResultMedia(character);
   root.querySelector('#save-card').addEventListener('click', exportResult);
+  root.querySelector('#copy-test-link').addEventListener('click', async () => {
+    const url = publicEntryUrl(document.baseURI), status = root.querySelector('#share-link-status');
+    try {
+      if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
+      await navigator.clipboard.writeText(url);
+      status.textContent = '测试入口已复制。可与结果卡一起分享；链接不包含你的兑换码或作答。';
+    } catch {
+      status.innerHTML = `<label>请长按复制测试入口<input class="share-url" readonly value="${h(url)}"></label>`;
+      const field = status.querySelector('input'); field.focus(); field.select();
+    }
+  });
   root.querySelector('#result-home').addEventListener('click', () => { renderHome(); focusHeading(); });
   root.querySelector('#read-answers').addEventListener('click', () => { readIndex = 0; renderQuestion(true); focusHeading(); });
   root.querySelector('#copy-answers').addEventListener('click', () => { root.querySelector('#copy-confirm').hidden = false; root.querySelector('#confirm-copy').focus(); });
@@ -280,17 +300,64 @@ function renderResult() {
 async function exportResult() {
   const button = root.querySelector('#save-card'), status = root.querySelector('#export-status');
   const snapshot = result;
-  button.disabled = true; status.textContent = '正在生成结果卡…';
+  button.disabled = true; button.textContent = '正在生成结果卡…'; button.setAttribute('aria-busy', 'true');
+  status.textContent = '正在准备图片，生成后可长按保存。';
   try {
-    const { createResultPoster } = await import('./poster.js');
-    const { blob } = await createResultPoster(snapshot.primary, { workTitle: work.title, totalQuestions: snapshot.totalQuestions, tied: snapshot.tieCount > 1 });
-    if (exportedUrl) URL.revokeObjectURL(exportedUrl);
-    exportedUrl = URL.createObjectURL(blob);
+    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    if (!root.contains(button) || result.resultId !== snapshot.resultId) return;
+    if (!exportedUrl || exportedResultId !== snapshot.resultId) {
+      const { blob } = await createResultPoster(snapshot.primary, { workTitle: work.title, totalQuestions: snapshot.totalQuestions,
+        tied: snapshot.tieCount > 1, portraitImage: root.querySelector('#result-portrait') });
+      if (!root.contains(button) || result.resultId !== snapshot.resultId) return;
+      if (exportedUrl) URL.revokeObjectURL(exportedUrl);
+      exportedUrl = URL.createObjectURL(blob); exportedResultId = snapshot.resultId;
+    }
     const link = document.createElement('a'), filename = `你是${work.title}中的谁-${snapshot.primary.character.name}.png`;
     link.href = exportedUrl; link.download = filename; document.body.append(link); link.click(); link.remove();
-    status.innerHTML = `<p>结果卡已生成，<a href="${exportedUrl}" download="${h(filename)}">保存 PNG ↓</a></p><img class="export-preview" src="${exportedUrl}" alt="${h(snapshot.primary.character.name)}结果卡，${snapshot.primary.matchCount}／${snapshot.totalQuestions}题符合">`;
-  } catch { status.textContent = '暂时未能保存结果卡，请重试，也可以先截图保留本档案。'; }
-  finally { button.disabled = false; }
+    status.innerHTML = `<p>结果卡已生成。手机可长按下图保存；也可<a href="${exportedUrl}" download="${h(filename)}">下载 PNG ↓</a>。分享时可另点“复制测试链接”。</p><img class="export-preview" src="${exportedUrl}" alt="${h(snapshot.primary.character.name)}结果卡，${snapshot.primary.matchCount}／${snapshot.totalQuestions}题符合">`;
+    status.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (error) { status.textContent = error.message || '暂时未能生成结果卡，请重试。'; }
+  finally { button.disabled = false; button.textContent = '生成分享结果卡 ↓'; button.removeAttribute('aria-busy'); }
+}
+
+function bindResultMedia(character) {
+  const portrait = root.querySelector('#result-portrait'), play = root.querySelector('#play-animation');
+  const save = root.querySelector('#save-animation'), status = root.querySelector('#animation-status');
+  const controller = new AbortController();
+  let pending, url, playing = false;
+  clearResultMedia = () => { controller.abort(); if (url) URL.revokeObjectURL(url); clearResultMedia = () => {}; };
+  portrait.addEventListener('error', () => {
+    if (!url) return;
+    URL.revokeObjectURL(url); url = null; pending = null; playing = false;
+    portrait.src = asset(character.card.still); portrait.alt = `${character.name}静态闪卡`;
+    play.textContent = '播放流光闪卡'; play.setAttribute('aria-pressed', 'false');
+    status.textContent = '动图未完整显示，已保留静态卡，请重试。';
+  });
+  async function load(download) {
+    if (playing && !download) {
+      portrait.src = asset(character.card.still); portrait.alt = `${character.name}静态闪卡`;
+      playing = false; play.textContent = '播放流光闪卡'; play.setAttribute('aria-pressed', 'false'); return;
+    }
+    play.disabled = save.disabled = true; status.textContent = '正在准备GIF，静态卡可以先查看…';
+    try {
+      if (!url) {
+        pending ||= fetchGif(asset(character.card.animation), { signal: controller.signal,
+          onProgress: percent => { status.textContent = percent == null ? '正在加载GIF…' : `正在加载GIF ${percent}%…`; } });
+        const blob = await pending;
+        if (controller.signal.aborted) return;
+        url = URL.createObjectURL(blob);
+      }
+      if (controller.signal.aborted) return;
+      portrait.src = url; portrait.alt = `${character.name}流光闪卡`; playing = true;
+      play.textContent = '暂停动效'; play.setAttribute('aria-pressed', 'true');
+      status.innerHTML = `GIF已准备，可长按上方图片保存，或<a href="${url}" download="${h(character.name)}-闪卡.gif">下载 GIF ↓</a>。`;
+      if (download) status.querySelector('a').click();
+    } catch (error) {
+      pending = null;
+      if (!controller.signal.aborted) status.innerHTML = `${h(error.message || 'GIF暂时无法加载，请重试。')} <a href="${h(asset(character.card.animation))}" target="_blank" rel="noopener">打开原GIF</a>`;
+    } finally { play.disabled = save.disabled = false; }
+  }
+  play.addEventListener('click', () => load(false)); save.addEventListener('click', () => load(true));
 }
 
 root.addEventListener('error', event => {

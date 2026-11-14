@@ -43,3 +43,4 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
+.card-download button{border:0;background:transparent;color:inherit;padding:7px 9px;min-height:40px;text-decoration:underline;text-underline-offset:4px}.card-download p{font-size:11px;line-height:1.8;color:inherit;letter-spacing:normal;overflow-wrap:anywhere}.share-url{display:block;width:100%;padding:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit}.hero-illustration picture{display:block;width:100%}

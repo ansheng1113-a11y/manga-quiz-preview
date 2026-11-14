@@ -3,6 +3,52 @@ const COLORS = { paper: '#f3f1e9', ink: '#172638', accent: '#d95432', muted: '#6
 const FONT = 'Arial, "PingFang SC", "Microsoft YaHei", sans-serif';
 const BRUSH = '"Kaiti SC", "STKaiti", "KaiTi", "Songti SC", "STSong", serif';
 
+function exportError(code, message, retryable = true) {
+  return Object.assign(new Error(message), { code, retryable });
+}
+
+async function within(promise, milliseconds, error) {
+  let timer;
+  try {
+    return await Promise.race([promise, new Promise((_, reject) => {
+      timer = setTimeout(() => reject(error), milliseconds);
+    })]);
+  } finally { clearTimeout(timer); }
+}
+
+function reusablePortrait(image, source) {
+  if (!image?.complete || !(image.naturalWidth > 0 && image.naturalHeight > 0)) return false;
+  try {
+    return new URL(image.currentSrc || image.src, document.baseURI).href === new URL(source, document.baseURI).href;
+  } catch { return false; }
+}
+
+async function loadPortrait(source) {
+  const image = new Image();
+  try {
+    const loaded = new Promise((resolve, reject) => {
+      image.onload = () => resolve(image);
+      image.onerror = () => reject(exportError('IMAGE_LOAD_FAILED', '人物静态图未能加载，请检查网络后重试。'));
+      image.src = source;
+      if (typeof image.decode === 'function') {
+        image.decode().then(() => resolve(image), () => {
+          if (image.complete && image.naturalWidth > 0) resolve(image);
+        });
+      }
+      if (image.complete && image.naturalWidth > 0) resolve(image);
+    });
+    await within(loaded, 8000, exportError('IMAGE_TIMEOUT', '人物静态图加载超时，请稍后重试。'));
+    if (!(image.naturalWidth > 0 && image.naturalHeight > 0)) {
+      throw exportError('IMAGE_LOAD_FAILED', '人物静态图未能加载，请检查网络后重试。');
+    }
+    return image;
+  } catch (error) {
+    image.removeAttribute?.('src');
+    if (['IMAGE_TIMEOUT', 'IMAGE_LOAD_FAILED'].includes(error.code)) throw error;
+    throw exportError('IMAGE_LOAD_FAILED', '人物静态图未能加载，请检查网络后重试。');
+  } finally { image.onload = null; image.onerror = null; }
+}
+
 function linesFor(ctx, text, width) {
   const lines = [];
   for (const paragraph of String(text || '').split('\n')) {
@@ -24,18 +70,24 @@ function linesFor(ctx, text, width) {
   return lines;
 }
 
-export async function createResultPoster(entry, { workTitle = '火影忍者', totalQuestions = 30, sample = false, tied = false } = {}) {
-  await document.fonts.ready;
+export async function createResultPoster(entry, { workTitle = '火影忍者', totalQuestions = 30, sample = false, tied = false, portraitImage } = {}) {
+  if (document.fonts?.ready) {
+    // The declared font stacks already contain local fallbacks; font loading must
+    // not prevent saving a result when a WebView leaves this promise pending.
+    await within(document.fonts.ready, 1000, new Error('Font wait expired')).catch(() => {});
+  }
   const character = entry.character;
   let portrait;
   if (character.card?.still) {
-    portrait = new Image();
-    portrait.src = character.card.still;
-    await portrait.decode();
+    portrait = reusablePortrait(portraitImage, character.card.still)
+      ? portraitImage : await loadPortrait(character.card.still);
   }
   const canvas = document.createElement('canvas');
   canvas.width = WIDTH;
   const ctx = canvas.getContext('2d');
+  if (!ctx || typeof canvas.toBlob !== 'function') {
+    throw exportError('CANVAS_UNAVAILABLE', '当前浏览器暂不支持保存结果卡，请用系统浏览器打开后重试。', false);
+  }
   const blocks = [];
   let y = 86;
   function text(value, size, lineHeight, { weight = '400', color = COLORS.ink, width = 880, align = 'center', gap = 0, family = FONT } = {}) {
@@ -135,7 +187,14 @@ export async function createResultPoster(entry, { workTitle = '火影忍者', to
       ctx.beginPath(); ctx.moveTo(108, block.y); ctx.lineTo(WIDTH - 108, block.y); ctx.stroke();
     }
   }
-  const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-  if (!blob) throw new Error('结果卡暂时未能生成，请重试。');
+  let blob;
+  try {
+    blob = await within(new Promise(resolve => canvas.toBlob(resolve, 'image/png')), 5000,
+      exportError('PNG_TIMEOUT', '结果卡生成超时，请稍后重试。'));
+  } catch (error) {
+    if (error.code === 'PNG_TIMEOUT') throw error;
+    throw exportError('PNG_ENCODING_FAILED', '结果卡暂时未能生成，请稍后重试。');
+  }
+  if (!blob) throw exportError('PNG_ENCODING_FAILED', '结果卡暂时未能生成，请稍后重试。');
   return { canvas, blob };
 }
